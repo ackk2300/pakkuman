@@ -3,8 +3,8 @@
 #include "Engine/Camera.h"
 #include "Engine/CsvReader.h"
 
-//namespace
-//{
+namespace
+{
 //	const int STAGE_X{ 15 };
 //	const int STAGE_Y{ 15 };
 //	const int sArray[STAGE_Y][STAGE_X]{
@@ -24,24 +24,33 @@
 //		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 //		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 //	};
-//}
+}
+
+bool Stage::IsWall(int _x, int _y)
+{
+	assert();
+	if(stageData_ [_y][_x] == STAGE_OBJ::WALL)
+		return true;
+	else
+	return false;
+}
 
 Stage::Stage(GameObject* parent)
-	:GameObject(parent,"Stage")
+	:GameObject(parent, "Stage")
 {
 	CsvReader csv;
 	csv.Load("map.csv");
 
-	int STAGE_X = csv.GetWidth();
-	int STAGE_Y = csv.GetHeight();
+	stageWidth_= csv.GetWidth();
+	stageHeight_ = csv.GetHeight();
 
-	for (int i = 0; i < STAGE_Y; i++) {
-		vector<int>sdata(STAGE_X, 0); //15‚±‚Ì”z—ñ‚ğ‚O‚Å‰Šú‰»
+	for (int i = 0; i < stageHeight_; i++) {
+		vector<int>sdata(stageWidth_, 0); 
 		stageData_.push_back(sdata);
 	}
 
-	for (int j = 0; j < STAGE_Y; j++) {
-		for (int i = 0; i < STAGE_X; i++) {
+	for (int j = 0; j < stageWidth_; j++) {
+		for (int i = 0; i < stageHeight_; i++) {
 			stageData_[j][i] = csv.GetValue(i, j);
 		}
 	}
@@ -68,7 +77,7 @@ void Stage::Draw()
 
 	for (int z = 0; z < 15; z++) {
 		for (int x = 0; x < 15; x++) {
-			floorTrans.position_ = { (float)x,0,(float)z };
+			floorTrans.position_ = { (float)x,0,(float)(14 - z) };
 			/*if (x == 0 || z == 0 || x == 14 || z == 14) {
 				Model::SetTransform(hBlock_, floorTrans);
 				Model::Draw(hBlock_);
@@ -77,18 +86,22 @@ void Stage::Draw()
 			Model::SetTransform(hFloor_, floorTrans);
 			Model::Draw(hFloor_);
 		}*/
-		if (stageData_[z][x] == 1) {
-			Model::SetTransform(hBlock_, floorTrans);
-			Model::Draw(hBlock_);
-		}
-		else {
-			Model::SetTransform(hFloor_, floorTrans);
-			Model::Draw(hFloor_);
-		}
+			if (stageData_[z][x] == 1) {
+				Model::SetTransform(hBlock_, floorTrans);
+				Model::Draw(hBlock_);
+			}
+			else {
+				Model::SetTransform(hFloor_, floorTrans);
+				Model::Draw(hFloor_);
+			}
 		}
 	}
 }
 
 void Stage::Release()
 {
+	for (int i = 0; i < stageHeight_; i++) {
+		stageData_[i].clear();
+	}
+	stageDate_.clear();
 }
