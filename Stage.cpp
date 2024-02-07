@@ -5,30 +5,30 @@
 
 namespace
 {
-//	const int STAGE_X{ 15 };
-//	const int STAGE_Y{ 15 };
-//	const int sArray[STAGE_Y][STAGE_X]{
-//		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-//		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//		{1,1,1,1,1,1,1,1,1,1,1,1,1,0,1},
-//		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//		{1,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
-//		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//		{1,1,1,1,1,1,1,1,1,1,1,1,1,0,1},
-//		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//		{1,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
-//		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//		{1,1,1,1,1,1,1,1,1,1,1,1,1,0,1},
-//		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//		{1,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
-//		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-//	};
+	const int STAGE_X{ 15 };
+	const int STAGE_Y{ 15 };
+	const int sArray[STAGE_Y][STAGE_X]{
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+	};
 }
 
 bool Stage::IsWall(int _x, int _y)
 {
-	assert();
+	//assert();
 	if(stageData_ [_y][_x] == STAGE_OBJ::WALL)
 		return true;
 	else
@@ -49,8 +49,8 @@ Stage::Stage(GameObject* parent)
 		stageData_.push_back(sdata);
 	}
 
-	for (int j = 0; j < stageWidth_; j++) {
-		for (int i = 0; i < stageHeight_; i++) {
+	for (int j = 0; j < stageHeight_; j++) {
+		for (int i = 0; i < stageWidth_; i++) {
 			stageData_[j][i] = csv.GetValue(i, j);
 		}
 	}
@@ -62,7 +62,7 @@ void Stage::Initialize()
 	assert(hFloor_ >= 0);
 	hBlock_ = Model::Load("Wall.fbx");
 	assert(hBlock_ >= 0);
-	Camera::SetPosition({ 6.5,15,-3 });
+	Camera::SetPosition({ 6.5,10,-3 });
 	Camera::SetTarget({ 6.5,0,5.5 });
 }
 
@@ -75,8 +75,8 @@ void Stage::Draw()
 	Transform floorTrans;
 	floorTrans.position_ = { 0,0,0 };
 
-	for (int z = 0; z < 15; z++) {
-		for (int x = 0; x < 15; x++) {
+	for (int z = 0; z < stageHeight_; z++) {
+		for (int x = 0; x < stageWidth_; x++) {
 			floorTrans.position_ = { (float)x,0,(float)(14 - z) };
 			/*if (x == 0 || z == 0 || x == 14 || z == 14) {
 				Model::SetTransform(hBlock_, floorTrans);
@@ -103,5 +103,5 @@ void Stage::Release()
 	for (int i = 0; i < stageHeight_; i++) {
 		stageData_[i].clear();
 	}
-	stageDate_.clear();
+	stageData_.clear();
 }
