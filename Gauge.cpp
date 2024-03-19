@@ -24,10 +24,10 @@ void Gauge::Update()
 
 void Gauge::Draw()
 {
-	Transform tr = this->transform_;
+	Transform tr = transform_;
 	tr.scale_.x = (float)gaugeCrrVal_ / (float)gaugeMaxVal_;
 
-	Image::SetTransform(hGaugeBar_, transform_);
+	Image::SetTransform(hGaugeBar_, tr);
 	Image::Draw(hGaugeBar_);
 
 	Image::SetTransform(hGaugeFrame_, transform_);

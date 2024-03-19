@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include "Engine/Text.h"
 
 class Stage;
 
@@ -12,6 +13,7 @@ class Player :
 	Stage* pStage_;
 	int hpMax_; //ç≈ëÂHP
 	int hpCrr_; //HP
+	Text* pText;
 public:
 	Player(GameObject* parent);
 
@@ -26,5 +28,7 @@ public:
 
 	//äJï˙
 	void Release() override;
+
+	void OnCollision(GameObject* pTarget) override;
 };
 

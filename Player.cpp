@@ -4,9 +4,11 @@
 #include "Engine/Debug.h"
 #include "Stage.h"
 #include "Gauge.h"
+#include "Engine/SphereCollider.h"
+
 
 namespace {
-	const float PLAYER_MOVE_SPEED{ 1.0f };
+	const float PLAYER_MOVE_SPEED{ 0.1f };
 }
 
 Player::Player(GameObject* parent)
@@ -23,6 +25,8 @@ void Player::Initialize()
 	transform_.position_.z = 1.5;
 	pStage_ = (Stage *)FindObject("Stage");
 
+	SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0, 0), 1.2f);
+	AddCollider(collision);
 	//map[13][1]が、(map[y][x]の場合)初期位置
 }
 
@@ -68,7 +72,8 @@ void Player::Update()
 	int tx, ty;
 	tx = (int)(XMVectorGetX(posTmp) + 1.0f);
 	ty = pStage_->GetStageWidth() - (int)(XMVectorGetZ(posTmp) + 1.0f);
-	if (!(pStage_->IsWall(tx, ty))) {
+	if (!(pStage_->IsWall(tx, ty))) 
+	{
 		pos = posTmp;
 	}
 	else
@@ -113,7 +118,7 @@ void Player::Update()
 				angle *= -1;
 			}*/
 		//}
-		transform_.rotate_.y = XMConvertToDegrees(angle);
+		transform_.rotate_.y = XMConvertToDegrees(-angle);
 	}
 	//ゲージのインスタンスをFindObjectで見つけて
 	//ゲージ型にキャストして
@@ -130,4 +135,10 @@ void Player::Draw()
 
 void Player::Release()
 {
+}
+
+void Player::OnCollision(GameObject* pTarget)
+{
+	//当たったときの処理
+
 }

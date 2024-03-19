@@ -2,6 +2,7 @@
 #include "Engine/Model.h"
 #include "Engine/Camera.h"
 #include "Engine/CsvReader.h"
+#include "Engine/SphereCollider.h"
 
 namespace
 {
@@ -64,6 +65,8 @@ void Stage::Initialize()
 	assert(hBlock_ >= 0);
 	Camera::SetPosition({ 6.5,10,-3 });
 	Camera::SetTarget({ 6.5,0,5.5 });
+	SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0, 0), 1.2f);
+	AddCollider(collision);
 }
 
 void Stage::Update()
